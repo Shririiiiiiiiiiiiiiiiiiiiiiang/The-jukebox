@@ -1,0 +1,19 @@
+body {
+    background: linear-gradient(135deg, #2e1e14, #4a2f1c);
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif; 
+
+}
+
+.jukeboxcabinet {
+    background-color: #6b3f24;
+    border: 5px solid #22140b;
+    border-radius: 24px 24px 8px 8px;
+    width: 550px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+}
