@@ -1,0 +1,21 @@
+{
+  "name": "the-jukebox",
+  "version": "1.0.0",
+  "description": "A web based jukebox for the Saloon",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shririiiiiiiiiiiiiiiiiiiiiiang/The-jukebox.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Shririiiiiiiiiiiiiiiiiiiiiiang/The-jukebox/issues"
+  },
+  "homepage": "https://github.com/Shririiiiiiiiiiiiiiiiiiiiiiang/The-jukebox#readme"
+}
