@@ -1,12 +1,18 @@
-fetch('/queue')
-.then(res => res.json())
-.then(songs => {
+function showqueue(songs) {
     const list = document.getElementById('songlist');
+    list.innerHTML = '';
     songs.forEach(song => {
         const item = document.createElement('li');
         item.textContent = song.title;
         list.appendChild(item);
     });
+}
+
+fetch('/queue')
+.then(res => res.json())
+.then(songs => {
+    showqueue(songs);
+
 });
 
 document.getElementById('formtoaddsong').addEventListener('submit', event => {
@@ -21,7 +27,7 @@ document.getElementById('formtoaddsong').addEventListener('submit', event => {
     })
     .then(res => res.json())
     .then(songs => {
-        console.log(songs);
+        showqueue(songs);
     });
     titleInput.value = '';
 });
