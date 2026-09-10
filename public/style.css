@@ -17,3 +17,34 @@ body {
     padding: 25px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
 }
+
+#songlist {
+    background-color: #e0d1af;
+    border: 3px solid #3e2412;
+    border-radius: 14px;
+    list-style: none;
+    padding: 10px;
+    margin: 13px 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+#songlist li {
+    padding: 11px 8px;
+    border-bottom: 1px solid #c9a876;
+    color: #3e2412;
+    font-family: 'Bitter', serif;
+    cursor: pointer; 
+}
+
+#songlist li:hover {
+    background-color: #d6bb7f;
+}
+
+#songlist li:last-child {
+    border-bottom: none;
+}
+
+h1 {
+    font-family: 'Rye', serif;
+}
