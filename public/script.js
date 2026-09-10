@@ -1,9 +1,14 @@
 function showqueue(songs) {
     const list = document.getElementById('songlist');
     list.innerHTML = '';
-    songs.forEach(song => {
-        const item = document.createElement('li');
-        item.textContent = song.title;
+        songs.forEach(song => {
+            const item = document.createElement('li');
+            item.textContent = song.title;
+            item.addEventListener('click', () => {
+                const songplayer = document.getElementById('songplayer')
+                songplayer.src = song.url;
+                songplayer.play();
+            });
         list.appendChild(item);
     });
 }
