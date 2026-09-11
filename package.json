@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/Shririiiiiiiiiiiiiiiiiiiiiiang/The-jukebox/issues"
   },
-  "homepage": "https://github.com/Shririiiiiiiiiiiiiiiiiiiiiiang/The-jukebox#readme"
+  "homepage": "https://github.com/Shririiiiiiiiiiiiiiiiiiiiiiang/The-jukebox#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
 }
