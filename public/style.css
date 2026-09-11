@@ -103,3 +103,34 @@ h1 {
     transform: translateX(-50%);
     transform-origin: bottom center;
 }
+
+#ptsonglist {
+    background-color: #d8c8a1;
+    border: 3px solid #2c190c;
+    border-radius: 14px;
+    padding: 15px;
+    margin: 13px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.smallclass {
+    color: #3e2412;
+    font-family: 'Bitter', serif;
+    text-align: center;
+    font-size: 13px;
+    opacity: 0.6;
+    min-height: 20px;
+}
+
+.mainclass {
+    color: #3e2412;
+    font-family: 'Bitter', serif;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    cursor: pointer
+
+}

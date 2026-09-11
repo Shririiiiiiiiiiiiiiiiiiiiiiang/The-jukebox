@@ -1,19 +1,24 @@
 let currentqueue = [];
 let currentIndex = -1;
+let centerIndex = 0
 
 
 function showqueue(songs) {
     currentqueue = songs;
-    const list = document.getElementById('songlist');
-    list.innerHTML = '';
-        songs.forEach((song, index) => {
-            const item = document.createElement('li');
-            item.textContent = song.title;
-            item.addEventListener('click', () => {
-                playSong(index);
-            });
-        list.appendChild(item);
-    });
+    const top = document.getElementById('topsong');
+    const mid = document.getElementById('midsong');
+    const bottom = document.getElementById('bottomsong');
+
+    top.textContent = currentqueue[centerIndex -1] ? currentqueue[centerIndex - 1].title : '';
+    mid.textContent = currentqueue[centerIndex] ? currentqueue[centerIndex].title : '';
+    bottom.textContent = currentqueue[centerIndex + 1] ? currentqueue[centerIndex + 1].title : '';
+
+    mid.onclick = () => {
+       
+        playSong(centerIndex);
+        
+    };
+
 }
 
 function playSong(index) {
@@ -99,3 +104,19 @@ function turnknob(event) {
     const volume = (angle + 135) / 270;
     document.getElementById('songplayer').volume = volume;
 }
+
+document.getElementById('ptsonglist').addEventListener('wheel', event => {
+    event.preventDefault();
+
+    if(event.deltaY > 0) {
+        if(centerIndex < currentqueue.length - 1) {
+            centerIndex++;
+        }
+    }
+    else {
+        if(centerIndex > 0) {
+            centerIndex--;
+        }
+    }
+    showqueue(currentqueue);
+});
