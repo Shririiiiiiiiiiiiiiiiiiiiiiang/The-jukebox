@@ -102,6 +102,8 @@ document.getElementById('playpause').addEventListener('click', () => {
 document.getElementById('skip').addEventListener('click', () => {
     if(currentIndex < currentqueue.length - 1) {
         playSong(currentIndex + 1);
+        centerIndex = currentIndex;
+        showqueue(currentqueue);
     }
 });
 
