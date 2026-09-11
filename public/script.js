@@ -1,9 +1,11 @@
 let currentqueue = [];
 let currentIndex = -1;
 let centerIndex = 0
+let fullQueue = []
 
 
 function showqueue(songs) {
+    
     currentqueue = songs;
     const top = document.getElementById('topsong');
     const mid = document.getElementById('midsong');
@@ -33,6 +35,7 @@ function playSong(index) {
 fetch('/queue')
 .then(res => res.json())
 .then(songs => {
+    fullQueue = songs;
     showqueue(songs);
 
 });
@@ -51,6 +54,7 @@ document.getElementById('formtoaddsong').addEventListener('submit', event => {
     })
     .then(res => res.json())
     .then(songs => {
+        fullQueue = songs;
         showqueue(songs);
     });
     titleInput.value = '';
@@ -119,4 +123,17 @@ document.getElementById('ptsonglist').addEventListener('wheel', event => {
         }
     }
     showqueue(currentqueue);
+});
+
+document.getElementById('searchbox').addEventListener('input', event => {
+    const query = event.target.value.toLowerCase();
+    if(query === '') return;
+
+    const foundIndex = fullQueue.findIndex(song => song.title.toLowerCase().includes(query));
+    if (foundIndex !== -1) {
+        currentqueue = fullQueue;
+        centerIndex = foundIndex;
+        showqueue(currentqueue);
+    }
+
 });
