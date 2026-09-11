@@ -8,6 +8,7 @@ function showqueue(songs) {
                 const songplayer = document.getElementById('songplayer')
                 songplayer.src = song.url;
                 songplayer.play();
+                document.getElementById('nowplaying').textContent = 'Now Playing:- ' + song.title;
             });
         list.appendChild(item);
     });

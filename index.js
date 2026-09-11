@@ -17,5 +17,5 @@ app.post('/queue', (req, res) => {
 })
 
 app.listen(PORT, () => {
-    console.log(`jukebox server is running on http://${PORT}`);
+    console.log(`jukebox server is running on http://localhost:${PORT}`);
 });
