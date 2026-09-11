@@ -144,3 +144,40 @@ h1 {
     border-radius: 10px;
     font-family: 'Bitter', serif;
 }
+
+#formtoaddsong {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 13px;
+}
+
+#formtoaddsong input {
+    flex: 1;
+    box-sizing: border-box;
+    padding: 9px;
+    border: 2px solid #3e2412;
+    border-radius: 10px;
+    background-color: #f4e4c1;
+    color: #3e2412;
+    font-family: 'Bitter', serif;
+}
+
+#formtoaddsong input::placeholder {
+    color: #8b6c46
+}
+
+#formtoaddsong button {
+    background: linear-gradient(180deg, #d8a839, #b17911);
+    border: 2px solid #5e4311;
+    border-radius: 10px;
+    color: #180f06;
+    font-family: 'bitter', serif;
+    font-weight: 650;
+    padding: 8px 16px;
+    cursor: pointer;
+    white-space: nowarp;
+}
+
+#formtoaddsong button:hover {
+    filter: brightness(1.1);
+}

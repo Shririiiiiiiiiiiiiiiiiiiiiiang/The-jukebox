@@ -16,6 +16,17 @@ app.post('/queue', (req, res) => {
     res.json(queue);
 })
 
+app.delete('/queue', (req, res) => {
+    queue = [];
+    res.json(queue);
+});
+
+app.delete('/queue/:index', (req, res) => {
+    const index = parseInt(req.params.index);
+    queue.splice(index, 1);
+    res.json(queue);
+});
+
 app.listen(PORT, () => {
     console.log(`jukebox server is running on http://localhost:${PORT}`);
 });
