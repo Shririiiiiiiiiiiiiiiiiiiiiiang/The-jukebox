@@ -2,6 +2,7 @@ let currentqueue = [];
 let currentIndex = -1;
 let centerIndex = 0
 let fullQueue = []
+let removemode = false;
 
 
 function showqueue(songs) {
@@ -11,9 +12,9 @@ function showqueue(songs) {
     const mid = document.getElementById('midsong');
     const bottom = document.getElementById('bottomsong');
 
-    top.textContent = currentqueue[centerIndex -1] ? currentqueue[centerIndex - 1].title : '';
-    mid.textContent = currentqueue[centerIndex] ? currentqueue[centerIndex].title : '';
-    bottom.textContent = currentqueue[centerIndex + 1] ? currentqueue[centerIndex + 1].title : '';
+    slotcontent(top, centerIndex - 1);
+    slotcontent(mid, centerIndex);
+    slotcontent(bottom, centerIndex + 1);
 
     mid.onclick = () => {
        
@@ -21,6 +22,33 @@ function showqueue(songs) {
         
     };
 
+}
+
+function slotcontent(slotElement, index) {
+    const song = currentqueue[index];
+    slotElement.innerHTML = '';
+
+    if(!song) 
+        return;
+
+    const titlespan = document.createElement('span');
+    titlespan.textContent = song.title;
+    slotElement.appendChild(titlespan);
+    if(removemode) {
+        const cross = document.createElement('span');
+        cross.textContent = ' X '
+        cross.className = 'cross';
+        cross.addEventListener('click', event => {
+            event.stopPropagation();
+            fetch('/queue/' + index, {method: 'DELETE'})
+            .then(res => res.json())
+            .then(updatedSongs => {
+                fullQueue = updatedSongs;
+                showqueue(updatedSongs);
+            });
+        });
+        slotElement.appendChild(cross);
+    }
 }
 
 function playSong(index) {
@@ -137,3 +165,20 @@ document.getElementById('searchbox').addEventListener('input', event => {
     }
 
 });
+
+document.getElementById('enableclearandremove').addEventListener('click', () => {
+    removemode = !removemode;
+    document.getElementById('clearqueue').style.display = removemode ? 'block' : 'none';
+    showqueue(currentqueue);
+});
+
+document.getElementById('clearqueue').addEventListener('click', () => {
+    fetch('/queue', {method: 'DELETE'})
+    .then(res => res.json())
+    .then(songs => {
+    fullQueue = songs;
+    centerIndex = 0;
+    showqueue(songs);
+
+    });
+})
