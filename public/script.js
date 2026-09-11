@@ -1,17 +1,28 @@
+let currentqueue = [];
+let currentIndex = -1;
+
+
 function showqueue(songs) {
+    currentqueue = songs;
     const list = document.getElementById('songlist');
     list.innerHTML = '';
-        songs.forEach(song => {
+        songs.forEach((song, index) => {
             const item = document.createElement('li');
             item.textContent = song.title;
             item.addEventListener('click', () => {
-                const songplayer = document.getElementById('songplayer')
-                songplayer.src = song.url;
-                songplayer.play();
-                document.getElementById('nowplaying').textContent = 'Now Playing:- ' + song.title;
+                playSong(index);
             });
         list.appendChild(item);
     });
+}
+
+function playSong(index) {
+    currentIndex = index;
+    const song = currentqueue[index];
+    const songplayer = document.getElementById('songplayer');
+    songplayer.src = song.url;
+    songplayer.play();
+    document.getElementById('nowplaying').textContent = 'Now Playing:- ' + song.title;
 }
 
 fetch('/queue')
@@ -39,4 +50,20 @@ document.getElementById('formtoaddsong').addEventListener('submit', event => {
     });
     titleInput.value = '';
     linkInput.value = '';
+});
+
+document.getElementById('playpause').addEventListener('click', () => {
+    const songplayer = document.getElementById('songplayer');
+    if (songplayer.paused) {
+        songplayer.play()
+    }
+    else {
+        songplayer.pause();
+    }
+});
+
+document.getElementById('skip').addEventListener('click', () => {
+    if(currentIndex < currentqueue.length - 1) {
+        playSong(currentIndex + 1);
+    }
 });
