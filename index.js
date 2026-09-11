@@ -4,7 +4,14 @@ app.use(express.json());
 app.use(express.static('public'));
 const PORT = 3000;
 
-let queue= [];
+let queue= [
+    {title: 'SoundHelix song 1', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'},
+    {title: 'SoundHelix song 2', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'},
+    {title: 'SoundHelix song 3', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'},
+    {title: 'SoundHelix song 4', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'},
+    {title: 'SoundHelix song 5', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'}
+
+];
 
 app.get('/queue', (req, res) => {
     res.json(queue);
