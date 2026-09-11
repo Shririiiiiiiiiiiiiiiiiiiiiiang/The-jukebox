@@ -67,3 +67,35 @@ document.getElementById('skip').addEventListener('click', () => {
         playSong(currentIndex + 1);
     }
 });
+
+const volknob = document.getElementById('volumeknob');
+const knobshow = document.getElementById('knobshow');
+let knobangle = -135;
+knobshow.style.transform = `translateX(-50%) rotate(${knobangle}deg)`;
+document.getElementById('songplayer').volume = 0;
+
+volknob.addEventListener('mousedown', () => {
+    document.addEventListener('mousemove', turnknob);
+    document.addEventListener('mouseup', () => {
+        document.removeEventListener('mousemove', turnknob);
+    });
+});
+
+function turnknob(event) {
+    const knobbox = volknob.getBoundingClientRect();
+    const centerx = knobbox.left + knobbox.width / 2;
+    const centery = knobbox.top + knobbox.height / 2;
+    const dx = event.clientX - centerx;
+    const dy = event.clientY - centery;
+
+    let angle = Math.atan2(dx, -dy) * (180 / Math.PI);
+
+    if(angle < -135) angle = -135;
+    if(angle > 135) angle = 135;
+
+    knobangle = angle;
+    knobshow.style.transform = `translateX(-50%) rotate(${angle}deg)`;
+
+    const volume = (angle + 135) / 270;
+    document.getElementById('songplayer').volume = volume;
+}

@@ -82,3 +82,24 @@ h1 {
 #controls button:hover {
     filter: brightness(1.1)
 }
+
+#volumeknob {
+    width: 42px;
+    height: 42px;
+    background: radial-gradient(circle at 35% 35%, #d4b467, #a5741a);
+    border: 2px solid #583f0f;
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+}
+
+#knobshow {
+    width: 3px;
+    height: 16px;
+    background-color: #2e1e0c;
+    position: absolute;
+    top: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    transform-origin: bottom center;
+}
