@@ -40,7 +40,7 @@ function slotcontent(slotElement, index) {
         cross.className = 'cross';
         cross.addEventListener('click', event => {
             event.stopPropagation();
-            fetch('/queue/' + index, {method: 'DELETE'})
+            fetch('/queue/' + song.id, {method: 'DELETE'})
             .then(res => res.json())
             .then(updatedSongs => {
                 fullQueue = updatedSongs;

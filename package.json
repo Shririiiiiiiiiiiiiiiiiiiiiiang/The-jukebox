@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/Shririiiiiiiiiiiiiiiiiiiiiiang/The-jukebox#readme",
   "dependencies": {
+    "@supabase/supabase-js": "^2.116.0",
+    "dotenv": "^17.4.2",
     "express": "^5.2.1"
   }
 }

@@ -1,37 +1,45 @@
+require('dotenv').config();
 const express = require('express');
+const { createClient } = require('@supabase/supabase-js');
 const app = express();
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+
 app.use(express.json());
 app.use(express.static('public'));
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-let queue= [
-    {title: 'SoundHelix song 1', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'},
-    {title: 'SoundHelix song 2', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'},
-    {title: 'SoundHelix song 3', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'},
-    {title: 'SoundHelix song 4', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'},
-    {title: 'SoundHelix song 5', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'}
 
-];
 
-app.get('/queue', (req, res) => {
-    res.json(queue);
+app.get('/queue', async (req, res) => {
+    const { data, error } = await supabase.from('songs').select('*').order('id');
+    if (error) return res.status(500).json({error: error.message });
+
+    res.json(data);
 });
 
-app.post('/queue', (req, res) => {
-    const song = req.body;
-    queue.push(song);
-    res.json(queue);
+app.post('/queue',async (req, res) => {
+const {title, url}  = req.body;
+const { data, error } = await supabase.from('songs').insert([{title, url }]).select();
+if(error) 
+    return res.status(500).json({error: error.message});
+const{data: allSongs} = await supabase.from('songs').select('*').order('id');
+    
+    res.json(allSongs);
 })
 
-app.delete('/queue', (req, res) => {
-    queue = [];
-    res.json(queue);
+app.delete('/queue', async(req, res) => {
+    const {error} = await supabase.from('songs').delete().neq('id', 0);
+    if (error) return res.status(500).json({error: error.message});
+    res.json([]);
 });
 
-app.delete('/queue/:index', (req, res) => {
-    const index = parseInt(req.params.index);
-    queue.splice(index, 1);
-    res.json(queue);
+app.delete('/queue/:id', async (req, res) => {
+    const id = req.params.id;
+    const {error} = await supabase.from('songs').delete().eq('id', id)
+    if(error)
+        return res.status(500).json({error: error.message});
+    const{ data: allSongs} = await supabase.from('songs').select('*').order('id');
+    res.json(allSongs);
 });
 
 app.listen(PORT, () => {
