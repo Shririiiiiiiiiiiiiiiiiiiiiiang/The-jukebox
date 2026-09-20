@@ -211,3 +211,15 @@ document.getElementById('clearqueue').addEventListener('click', () => {
 
     });
 })
+
+setInterval(() => {
+    fetch('/queue')
+    .then(res => res.json())
+    .then(songs => {
+        fullQueue = songs;
+        currentqueue = songs.filter(song => !localsong.includes(song.id));
+        showqueue(currentqueue);
+
+    });
+    
+}, 3000);
