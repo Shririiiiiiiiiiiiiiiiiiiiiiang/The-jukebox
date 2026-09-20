@@ -91,6 +91,13 @@ document.getElementById('formtoaddsong').addEventListener('submit', event => {
 
 document.getElementById('playpause').addEventListener('click', () => {
     const songplayer = document.getElementById('songplayer');
+    if (currentIndex === -1) {
+        playSong(0);
+        centerIndex = 0;
+        showqueue(currentqueue);
+        return;
+    }
+
     if (songplayer.paused) {
         songplayer.play()
     }
