@@ -3,6 +3,7 @@ let currentIndex = -1;
 let centerIndex = 0
 let fullQueue = []
 let removemode = false;
+let localsong = JSON.parse(localStorage.getItem('localsong') || '[]');
 
 
 function showqueue(songs) {
@@ -44,12 +45,28 @@ function slotcontent(slotElement, index) {
             .then(res => res.json())
             .then(updatedSongs => {
                 fullQueue = updatedSongs;
+                currentqueue = updatedSongs.filter(song => !localsong.includes(song.id));
                 showqueue(updatedSongs);
             });
         });
         slotElement.appendChild(cross);
+
+        const removelocal = document.createElement('span');
+        removelocal.textContent =  ' hide ';
+        removelocal.className = 'hide';
+        removelocal.addEventListener('click', event => {
+            event.stopPropagation();
+            localsong.push(song.id);
+            localStorage.setItem('localsong', JSON.stringify(localsong));
+            currentqueue = fullQueue.filter(s => !localsong.includes(s.id));
+            showqueue(currentqueue);
+        });
+        slotElement.appendChild(removelocal);
     }
+
 }
+
+
 
 function playSong(index) {
     currentIndex = index;
@@ -64,7 +81,8 @@ fetch('/queue')
 .then(res => res.json())
 .then(songs => {
     fullQueue = songs;
-    showqueue(songs);
+    currentqueue = songs.filter(song => !localsong.includes(song.id));
+    showqueue(currentqueue);
 
 });
 
@@ -83,7 +101,8 @@ document.getElementById('formtoaddsong').addEventListener('submit', event => {
     .then(res => res.json())
     .then(songs => {
         fullQueue = songs;
-        showqueue(songs);
+        currentqueue = songs.filter(song => !localsong.includes(song.id));
+        showqueue(currentqueue);
     });
     titleInput.value = '';
     linkInput.value = '';
@@ -186,8 +205,9 @@ document.getElementById('clearqueue').addEventListener('click', () => {
     .then(res => res.json())
     .then(songs => {
     fullQueue = songs;
+    currentqueue = songs.filter(song => !localsong.includes(song.id));
     centerIndex = 0;
-    showqueue(songs);
+    showqueue(currentqueue);
 
     });
 })

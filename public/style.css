@@ -225,3 +225,27 @@ h1 {
 .cross:hover{
     color: #c0392b
 }
+
+.hide {
+    color: #3e6b2e;
+    font-weight: 700px;
+    cursor: pointer;
+    margin-left: 6px;
+}
+
+.hide:hover {
+    color: #2e5322
+}
+
+.helplink {
+    display: block;
+    text-align: right;
+    color: #f0c040;
+    font-family: 'Bitter', serif;
+    font-weight: 650;
+    margin-bottom: 8px;
+}
+
+.helplink:hover {
+    color: #ebb839
+}
