@@ -91,21 +91,32 @@ document.getElementById('formtoaddsong').addEventListener('submit', event => {
 
     const titleInput = document.getElementById('songtitle');
     const linkInput = document.getElementById('urlofsong');
-    const title = titleInput.value;
-    const link = linkInput.value;
+    const fileInput = document.getElementById('songfile');
+
+    const formdata = new FormData();
+    formdata.append('title', titleInput.value);
+    formdata.append('url', linkInput.value);
+    if(fileInput.files[0]) formdata.append('songfile', fileInput.files[0]);
+
+   
     fetch('/queue', {
         method: 'POST',
-        headers: {'Content-Type' : 'application/json'},
-        body: JSON.stringify({title: title, url: link})
+       body: formdata
     })
     .then(res => res.json())
     .then(songs => {
+        if(!Array.isArray(songs)) {
+            alert(songs.error || "Nah you did something wrong")
+            return;
+        }
         fullQueue = songs;
         currentqueue = songs.filter(song => !localsong.includes(song.id));
         showqueue(currentqueue);
-    });
-    titleInput.value = '';
-    linkInput.value = '';
+
+        titleInput.value = '';
+        linkInput.value = '';
+        fileInput.value = '';
+    });        
 });
 
 document.getElementById('playpause').addEventListener('click', () => {
