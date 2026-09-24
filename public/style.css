@@ -149,12 +149,24 @@ h1 {
 
 #formtoaddsong {
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 13px;
 }
 
+#songtitle, #urlofsong {
+    flex: 1 1 140px;
+    min-width: 0;
+}
+
+#songfile {
+    flex: 1 1 100%;
+    min-width: 0;
+}
+
+
+
 #formtoaddsong input {
-    flex: 1;
     box-sizing: border-box;
     padding: 9px;
     border: 2px solid #3e2412;
@@ -169,6 +181,7 @@ h1 {
 }
 
 #formtoaddsong button {
+    flex: 1 1 100%;
     background: linear-gradient(180deg, #d8a839, #b17911);
     border: 2px solid #5e4311;
     border-radius: 10px;
