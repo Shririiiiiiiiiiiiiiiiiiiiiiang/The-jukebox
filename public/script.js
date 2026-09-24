@@ -1,3 +1,4 @@
+const supa = supabase.createClient('https://fighwcwkytmpuuiyqdzt.supabase.co','sb_publishable_popke49BB48cOKO7IOe_IQ_m9puXtQJ');
 let currentqueue = [];
 let currentIndex = -1;
 let centerIndex = 0
@@ -86,25 +87,48 @@ fetch('/queue')
 
 });
 
-document.getElementById('formtoaddsong').addEventListener('submit', event => {
+document.getElementById('formtoaddsong').addEventListener('submit', async event => {
     event.preventDefault();
 
     const titleInput = document.getElementById('songtitle');
     const linkInput = document.getElementById('urlofsong');
     const fileInput = document.getElementById('songfile');
 
-    const formdata = new FormData();
-    formdata.append('title', titleInput.value);
-    formdata.append('url', linkInput.value);
-    if(fileInput.files[0]) formdata.append('songfile', fileInput.files[0]);
+    let url = linkInput.value;
+    const file = fileInput.files[0];
+    if(!file && !url) {
+        alert('enter url or file');
+        return;
+    }
+    if(file) {
+        const tokenres = await fetch('/upload-url', {
+            method: 'POST',
+            headers: {'Content-type' : 'application/json'},
+            body: JSON.stringify({filename: file.name})
+        });
+        const tokendata = await tokenres.json();
+        if(!tokenres.ok) {
+            alert(tokendata.error || "not uploaded pls check");
+            return;
+        }
+        
+        const {error: uploadError } =await supa.storage
+        .from('songs')
+        .uploadToSignedUrl(tokendata.path, tokendata.token, file, {contentType: file.type});
+        if(uploadError) {
+            alert(uploadError.message);
+            return;
+        }
+        url= tokendata.publicUrl;
+    }
 
    
-    fetch('/queue', {
+    const res = await fetch('/queue', {
         method: 'POST',
-       body: formdata
-    })
-    .then(res => res.json())
-    .then(songs => {
+        headers: {'Content-Type': 'application/json'},
+       body: JSON.stringify({title: titleInput.value, url: url})
+    });
+    const songs = await res.json();
         if(!Array.isArray(songs)) {
             alert(songs.error || "Nah you did something wrong")
             return;
@@ -116,7 +140,7 @@ document.getElementById('formtoaddsong').addEventListener('submit', event => {
         titleInput.value = '';
         linkInput.value = '';
         fileInput.value = '';
-    });        
+         
 });
 
 document.getElementById('playpause').addEventListener('click', () => {

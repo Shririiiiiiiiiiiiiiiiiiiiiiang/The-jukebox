@@ -74,6 +74,21 @@ app.delete('/queue/:id', async (req, res) => {
     res.json(allSongs);
 });
 
+app.post('/upload-url', async (req, res) => {
+    const {filename} = req.body;
+    if(!filename)
+        return res.status(400).json({error: 'enter file name'});
+    
+    const safenam = Date.now() + '-' + filename.replace(/[^a-zA-Z0-9.]/g, '_');
+
+    const {data, error} = await supabase.storage
+    .from('songs')
+    .createSignedUploadUrl(safenam);
+    if (error) return res.status(500).json({error: error.message});
+    const{data: pub} = supabase.storage.from('songs').getPublicUrl(safenam);
+    res.json({path: data.path, token: data.token, publicUrl: pub.publicUrl});
+});
+
 app.listen(PORT, () => {
     console.log(`jukebox server is running on http://localhost:${PORT}`);
 });

@@ -13,7 +13,7 @@
         <h1>Jukebox</h1>
         <form id="formtoaddsong">
             <input type="text" id="songtitle" placeholder="Song Title" required>
-            <input type="text" id="urlofsong" placeholder="Link(.Mp3 or file)" required>
+            <input type="text" id="urlofsong" placeholder="Link(.Mp3 or file)" >
             <input type="file" id="songfile" accept="audio/*">
             <button type="submit">Add song to Queue</button>
         </form>
@@ -35,8 +35,9 @@
         <button id="clearqueue" style="display: none;">Clear Whole queue</button>
         <audio id="songplayer"></audio>
         </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  
     <script src="script.js"></script>   
-    <
+    
     </body>
 
 </html>
