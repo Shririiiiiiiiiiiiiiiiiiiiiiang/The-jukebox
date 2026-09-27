@@ -275,8 +275,10 @@ document.getElementById('stafflogin').addEventListener('click' , () => {
     })
     .then(res => res.json())
     .then(data => {
-        if(data.ok) 
+        if(data.ok)  {
+            isstaff = true;
             alert('logged in');
+        }
         else 
             alert('wrong password')
     });
