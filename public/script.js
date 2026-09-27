@@ -40,13 +40,27 @@ function slotcontent(slotElement, index) {
         const cross = document.createElement('span');
         cross.textContent = ' X '
         cross.className = 'cross';
-        cross.addEventListener('click', event => {
+        cross.addEventListener('click', async event => {
             event.stopPropagation();
-            fetch('/queue/' + song.id, {method: 'DELETE'})
+            if(!(await deleteallow())) return;
+            fetch('/queue/' + song.id, {
+                method: 'DELETE',
+                
+            })
             .then(res => res.json())
             .then(updatedSongs => {
                 fullQueue = updatedSongs;
                 currentqueue = updatedSongs.filter(song => !localsong.includes(song.id));
+                
+                if(centerIndex >= currentqueue.length) {
+                    centerIndex = Math.max(currentqueue.length -1, 0);
+                }
+
+                if(currentqueue.length=== 0)
+                    document.getElementById('nowplaying').textContent = 'Select a song to play';
+                document.getElementById('songplayer').pause();
+                document.getElementById('songplayer').src = '';
+                currentIndex = -1;
                 showqueue(updatedSongs);
             });
         });
@@ -235,8 +249,39 @@ document.getElementById('enableclearandremove').addEventListener('click', () => 
     showqueue(currentqueue);
 });
 
-document.getElementById('clearqueue').addEventListener('click', () => {
-    fetch('/queue', {method: 'DELETE'})
+async function deleteallow() {
+    if(confirm('Log in as staff?') === false) return false;
+    const password = prompt('Staff Password: ');
+    const res = await fetch('/login', {
+        method: 'POST',
+        headers: {'Content-Type' : 'application/json'},
+        body: JSON.stringify({password})
+    });
+    return(await res.json()).ok;
+}
+
+document.getElementById('stafflogin').addEventListener('click' , () => {
+    const password = prompt('enter Staff password: ');
+    fetch('/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({password: password})
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.ok) 
+            alert('logged in');
+        else 
+            alert('wrong password')
+    });
+});
+
+document.getElementById('clearqueue').addEventListener('click', async () => {
+     if(!(await deleteallow())) return;
+    fetch('/queue', {
+        method: 'DELETE',
+        
+    })
     .then(res => res.json())
     .then(songs => {
     fullQueue = songs;

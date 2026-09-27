@@ -7,12 +7,36 @@ const path = require('path');
 const multer = require('multer');
 const upload = multer({storage: multer.memoryStorage()});
 
+const session = require('express-session');
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
+
+function checkaccess(req, res, next ) {
+    if(!req.session.loggedin) {
+        return res.status(403).json({error:"Not authrised"});
+    }
+    next();
+}
+
+
+
 app.use(express.json());
 app.use(express.static('public'));
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 })
 const PORT = process.env.PORT || 3000;
+
+app.post('/login', (req, res) => {
+    if(req.body.password !== process.env.ADMIN_PASSWORD) {
+        return res.status(403).json({error: 'wrong password'});
+    }
+    req.session.loggedin = true;
+    res.json({ok: true});
+});
 
 
 
@@ -59,13 +83,13 @@ const{data: allSongs} = await supabase.from('songs').select('*').order('id');
 
 
 
-app.delete('/queue', async(req, res) => {
+app.delete('/queue', checkaccess, async(req, res) => {
     const {error} = await supabase.from('songs').delete().neq('id', 0);
     if (error) return res.status(500).json({error: error.message});
     res.json([]);
 });
 
-app.delete('/queue/:id', async (req, res) => {
+app.delete('/queue/:id', checkaccess, async (req, res) => {
     const id = req.params.id;
     const {error} = await supabase.from('songs').delete().eq('id', id)
     if(error)

@@ -262,3 +262,20 @@ h1 {
 .helplink:hover {
     color: #ebb839
 }
+
+#stafflogin {
+    background: linear-gradient(180deg, #d8a839, #b17911);
+    border: 2px solid #35260b;
+    border-radius: 5px;
+    color: #2e1d0c;
+    padding: 10px 14px;
+    cursor: pointer;
+    position: fixed;
+    left: 12px;
+    bottom: 12px;
+    
+}
+
+#stafflogin:hover {
+    filter: brightness(1.1)
+}
