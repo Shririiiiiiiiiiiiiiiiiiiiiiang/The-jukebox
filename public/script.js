@@ -249,7 +249,11 @@ document.getElementById('enableclearandremove').addEventListener('click', () => 
     showqueue(currentqueue);
 });
 
+let isstaff = false;
+
 async function deleteallow() {
+    if(isstaff) 
+        return true;
     if(confirm('Log in as staff?') === false) return false;
     const password = prompt('Staff Password: ');
     const res = await fetch('/login', {
@@ -257,7 +261,9 @@ async function deleteallow() {
         headers: {'Content-Type' : 'application/json'},
         body: JSON.stringify({password})
     });
-    return(await res.json()).ok;
+    const ok = (await res.json()).ok;
+    if (ok) isstaff = true
+    return ok;
 }
 
 document.getElementById('stafflogin').addEventListener('click' , () => {

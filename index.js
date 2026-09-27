@@ -8,7 +8,15 @@ const multer = require('multer');
 const upload = multer({storage: multer.memoryStorage()});
 
 const session = require('express-session');
+const pgSession = require('connect-pg-simple')(session);
+const{Pool}= require('pg');
+
+const pgpool = new Pool ({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {rejectUnauthorized: false}
+});
 app.use(session({
+    store: new pgSession({ pool: pgpool, createTableIfMissing: true}),
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false
