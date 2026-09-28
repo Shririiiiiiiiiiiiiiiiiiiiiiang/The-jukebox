@@ -4,6 +4,7 @@ let currentIndex = -1;
 let centerIndex = 0
 let fullQueue = []
 let removemode = false;
+let songplaycurrent = null;
 let localsong = JSON.parse(localStorage.getItem('localsong') || '[]');
 
 
@@ -93,6 +94,7 @@ function slotcontent(slotElement, index) {
 function playSong(index) {
     currentIndex = index;
     const song = currentqueue[index];
+    songplaycurrent = song.id;
     const songplayer = document.getElementById('songplayer');
     songplayer.src = song.url;
     songplayer.play();
@@ -104,6 +106,7 @@ fetch('/queue')
 .then(songs => {
     fullQueue = songs;
     currentqueue = songs.filter(song => !localsong.includes(song.id));
+    
     showqueue(currentqueue);
 
 });
@@ -251,6 +254,9 @@ document.getElementById('searchbox').addEventListener('input', event => {
         
         
     }
+    else if(currentIndex !== -1) {
+        centerIndex = currentIndex;
+    }
         showqueue(currentqueue);
 });
 
@@ -317,6 +323,11 @@ setInterval(() => {
     .then(songs => {
         fullQueue = songs;
         currentqueue = songs.filter(song => !localsong.includes(song.id));
+        if(songplaycurrent !== null) {
+            const playingpos = currentqueue.findIndex(song => song.id === songplaycurrent);
+            if(playingpos !== -1)
+                currentIndex = playingpos;
+        }
         showqueue(currentqueue);
 
     });
