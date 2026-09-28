@@ -288,6 +288,7 @@ async function deleteallow() {
     });
     const ok = (await res.json()).ok;
     if (ok) isstaff = true
+    else alert('wrong password');
     return ok;
 }
 
