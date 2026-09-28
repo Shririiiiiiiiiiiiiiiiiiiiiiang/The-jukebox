@@ -76,6 +76,11 @@ function slotcontent(slotElement, index) {
             localsong.push(song.id);
             localStorage.setItem('localsong', JSON.stringify(localsong));
             currentqueue = fullQueue.filter(s => !localsong.includes(s.id));
+            if(centerIndex >= currentqueue.length) {
+                centerIndex = Math.max(currentqueue.length - 1, 0); 
+
+                
+            }
             showqueue(currentqueue);
         });
         slotElement.appendChild(removelocal);
