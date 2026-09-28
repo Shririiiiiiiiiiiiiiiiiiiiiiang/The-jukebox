@@ -52,8 +52,11 @@ function slotcontent(slotElement, index) {
             .then(updatedSongs => {
                 fullQueue = updatedSongs;
                 currentqueue = updatedSongs.filter(song => !localsong.includes(song.id));
-                
+                if(index < centerIndex) {
+                        centerIndex--;
+                    }
                 if(centerIndex >= currentqueue.length) {
+                    
                     centerIndex = Math.max(currentqueue.length -1, 0);
                 }
 
@@ -77,7 +80,12 @@ function slotcontent(slotElement, index) {
             localsong.push(song.id);
             localStorage.setItem('localsong', JSON.stringify(localsong));
             currentqueue = fullQueue.filter(s => !localsong.includes(s.id));
+           if(index < centerIndex) {
+                    centerIndex--;
+                }
+           
             if(centerIndex >= currentqueue.length) {
+                
                 centerIndex = Math.max(currentqueue.length - 1, 0); 
 
                 
