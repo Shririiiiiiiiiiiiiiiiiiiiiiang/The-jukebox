@@ -56,12 +56,14 @@ function slotcontent(slotElement, index) {
                     centerIndex = Math.max(currentqueue.length -1, 0);
                 }
 
-                if(currentqueue.length=== 0)
+                if(currentqueue.length=== 0) {
                     document.getElementById('nowplaying').textContent = 'Select a song to play';
                 document.getElementById('songplayer').pause();
                 document.getElementById('songplayer').src = '';
                 currentIndex = -1;
-                showqueue(updatedSongs);
+                
+                }
+                showqueue(currentqueue);
             });
         });
         slotElement.appendChild(cross);
@@ -232,15 +234,19 @@ document.getElementById('ptsonglist').addEventListener('wheel', event => {
 
 document.getElementById('searchbox').addEventListener('input', event => {
     const query = event.target.value.toLowerCase();
-    if(query === '') return;
+    const visible = fullQueue.filter(song => !localsong.includes(song.id));
+    currentqueue = visible;
 
-    const foundIndex = fullQueue.findIndex(song => song.title.toLowerCase().includes(query));
-    if (foundIndex !== -1) {
-        currentqueue = fullQueue;
-        centerIndex = foundIndex;
-        showqueue(currentqueue);
+
+    
+    if (query !== '') {
+        const foundIndex = visible.findIndex(song => song.title.toLowerCase().includes(query));
+        if (foundIndex !== -1) 
+            centerIndex = foundIndex
+        
+        
     }
-
+        showqueue(currentqueue);
 });
 
 document.getElementById('enableclearandremove').addEventListener('click', () => {
