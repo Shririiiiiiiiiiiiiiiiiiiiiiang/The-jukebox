@@ -181,7 +181,7 @@ document.getElementById('formtoaddsong').addEventListener('submit', async event 
         }
         fullQueue = songs;
         currentqueue = songs.filter(song => !localsong.includes(song.id));
-        centerIndex = currentIndex.length - 1;
+        centerIndex = currentqueue.length - 1;
         showqueue(currentqueue);
 
         titleInput.value = '';
