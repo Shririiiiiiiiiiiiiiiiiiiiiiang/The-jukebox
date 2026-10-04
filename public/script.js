@@ -100,8 +100,9 @@ function slotcontent(slotElement, index) {
 
 
 function playSong(index) {
-    currentIndex = index;
     const song = currentqueue[index];
+    if(!song) return;
+    currentIndex = index;
     songplaycurrent = song.id;
     const songplayer = document.getElementById('songplayer');
     songplayer.src = song.url;
@@ -121,6 +122,9 @@ fetch('/queue')
 
 document.getElementById('formtoaddsong').addEventListener('submit', async event => {
     event.preventDefault();
+    const submitbtn = event.target.querySelector('button[type="submit"]');
+    submitbtn.disabled = true;
+    submitbtn.textContent = 'Adding song';
 
     const titleInput = document.getElementById('songtitle');
     const linkInput = document.getElementById('urlofsong');
@@ -130,6 +134,8 @@ document.getElementById('formtoaddsong').addEventListener('submit', async event 
     const file = fileInput.files[0];
     if(!file && !url) {
         alert('enter url or file');
+        submitbtn.disabled = false;
+        submitbtn.textContent = 'Add song to queue';
         return;
     }
     if(file) {
@@ -141,6 +147,8 @@ document.getElementById('formtoaddsong').addEventListener('submit', async event 
         const tokendata = await tokenres.json();
         if(!tokenres.ok) {
             alert(tokendata.error || "not uploaded pls check");
+            submitbtn.disabled = false;
+            submitbtn.textContent = 'Add song to queue';
             return;
         }
         
@@ -149,6 +157,8 @@ document.getElementById('formtoaddsong').addEventListener('submit', async event 
         .uploadToSignedUrl(tokendata.path, tokendata.token, file, {contentType: file.type});
         if(uploadError) {
             alert(uploadError.message);
+            submitbtn.disabled = false;
+            submitbtn.textContent = 'Add song to queue';
             return;
         }
         url= tokendata.publicUrl;
@@ -163,15 +173,20 @@ document.getElementById('formtoaddsong').addEventListener('submit', async event 
     const songs = await res.json();
         if(!Array.isArray(songs)) {
             alert(songs.error || "Nah you did something wrong")
+            submitbtn.disabled = false;
+            submitbtn.textContent = 'Add song to queue';
             return;
         }
         fullQueue = songs;
         currentqueue = songs.filter(song => !localsong.includes(song.id));
+        centerIndex = currentIndex.length - 1;
         showqueue(currentqueue);
 
         titleInput.value = '';
         linkInput.value = '';
         fileInput.value = '';
+        submitbtn.disabled = false;
+        submitbtn.textContent = 'Add song to queue';
          
 });
 
@@ -334,9 +349,19 @@ setInterval(() => {
         currentqueue = songs.filter(song => !localsong.includes(song.id));
         if(songplaycurrent !== null) {
             const playingpos = currentqueue.findIndex(song => song.id === songplaycurrent);
-            if(playingpos !== -1)
+            if(playingpos !== -1){
                 currentIndex = playingpos;
+            }
+
+            else {
+                document.getElementById('songplayer').pause();
+                document.getElementById('songplayer').src = '';
+                document.getElementById('nowplaying').textContent = 'Select a song to play';
+                currentIndex = -1;
+                songplaycurrent = null;
+            }
         }
+        
         showqueue(currentqueue);
 
     });
