@@ -126,7 +126,6 @@ document.getElementById('formtoaddsong').addEventListener('submit', async event 
     submitbtn.disabled = true;
     submitbtn.textContent = 'Adding song';
     console.log('adddingggg sooonnnnnnnggggggg');
-    await new Promise(r => setTimeout(r, 3000));
 
     const titleInput = document.getElementById('songtitle');
     const linkInput = document.getElementById('urlofsong');
